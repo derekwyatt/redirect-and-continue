@@ -1,0 +1,9 @@
+#!/bin/bash
+
+# You might need to run a bunch of these
+# Should cause the 'Content-Length' issue
+curl -v -F"file=@data-large.txt" http://localhost:50000/endpoint/1
+
+# You might need to run a bunch of these
+# Should cause the 'Cannot pull port (requestParsingIn) twice' problem
+curl -v -F"file=@data-small.txt" http://localhost:50000/endpoint/2
