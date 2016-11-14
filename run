@@ -10,16 +10,20 @@ fi
 
 # You might need to run a bunch of these
 # Should cause the 'Content-Length' issue
+echo
 echo "================= TEST 1"
 curl -v -F"file=@data-large.txt" http://localhost:$port/redirect/1
 
 # You might need to run a bunch of these
 # Should cause the 'Cannot pull port (requestParsingIn) twice' problem
+echo
 echo "================= TEST 2"
 curl -v -F"file=@data-small.txt" http://localhost:$port/redirect/2
 
+echo
 echo "================= TEST 3"
 curl -v -F"file=@data-large.txt" http://localhost:$port/success/1
 
+echo
 echo "================= TEST 4"
 curl -v -F"file=@data-small.txt" http://localhost:$port/success/2

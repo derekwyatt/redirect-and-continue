@@ -13,7 +13,11 @@ class Server(implicit system: ActorSystem, materializer: Materializer, ec: Execu
   val route = path("redirect" / IntNumber) { i =>
     redirect("/nowhere", MovedPermanently)
   } ~ path("success" / IntNumber) { i =>
-    complete(OK)
+    post {
+      entity(as[String]) { e =>
+        complete(OK)
+      }
+    }
   }
 
   def bindingFuture = Http().bindAndHandle(handler = route, interface = "0.0.0.0", port = 50001)
