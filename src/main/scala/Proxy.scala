@@ -4,6 +4,7 @@ import akka.http.scaladsl.model.headers.Connection
 import akka.http.scaladsl.model.HttpRequest
 import akka.actor.ActorSystem
 import akka.stream.{ ActorMaterializer, Materializer }
+import com.typesafe.config.ConfigFactory
 import scala.util.{ Failure, Success }
 
 class Proxy(implicit system: ActorSystem, materializer: Materializer) extends Directives {
@@ -21,7 +22,8 @@ class Proxy(implicit system: ActorSystem, materializer: Materializer) extends Di
 }
 
 object Proxy extends App {
-  implicit val system = ActorSystem()
+  val config = ConfigFactory.parseString("akka.http.server.proxy-mode = on").withFallback(ConfigFactory.load())
+  implicit val system = ActorSystem("Proxy", config)
   implicit val materializer = ActorMaterializer()
   implicit val ec = system.dispatcher
 

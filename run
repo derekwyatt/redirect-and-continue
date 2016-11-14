@@ -1,9 +1,25 @@
 #!/bin/bash
 
+port=50000
+
+if [[ ${1-} == "proxy" ]]; then
+  port=50000
+else
+  port=50001
+fi
+
 # You might need to run a bunch of these
 # Should cause the 'Content-Length' issue
-curl -v -F"file=@data-large.txt" http://localhost:50000/endpoint/1
+echo "================= TEST 1"
+curl -v -F"file=@data-large.txt" http://localhost:$port/redirect/1
 
 # You might need to run a bunch of these
 # Should cause the 'Cannot pull port (requestParsingIn) twice' problem
-curl -v -F"file=@data-small.txt" http://localhost:50000/endpoint/2
+echo "================= TEST 2"
+curl -v -F"file=@data-small.txt" http://localhost:$port/redirect/2
+
+echo "================= TEST 3"
+curl -v -F"file=@data-large.txt" http://localhost:$port/success/1
+
+echo "================= TEST 4"
+curl -v -F"file=@data-small.txt" http://localhost:$port/success/2

@@ -1,7 +1,7 @@
 import akka.http.scaladsl.server.{ Directives, PathMatchers }
 import akka.http.scaladsl.Http
 import akka.http.scaladsl.model.headers.Connection
-import akka.http.scaladsl.model.StatusCodes.MovedPermanently
+import akka.http.scaladsl.model.StatusCodes.{ MovedPermanently, OK }
 import akka.http.scaladsl.model.HttpRequest
 import akka.actor.ActorSystem
 import akka.stream.{ ActorMaterializer, Materializer }
@@ -10,8 +10,10 @@ import scala.concurrent.duration._
 import scala.concurrent.{ Await, ExecutionContext }
 
 class Server(implicit system: ActorSystem, materializer: Materializer, ec: ExecutionContext) extends Directives with PathMatchers {
-  val route = path("endpoint" / IntNumber) { i =>
+  val route = path("redirect" / IntNumber) { i =>
     redirect("/nowhere", MovedPermanently)
+  } ~ path("success" / IntNumber) { i =>
+    complete(OK)
   }
 
   def bindingFuture = Http().bindAndHandle(handler = route, interface = "0.0.0.0", port = 50001)
